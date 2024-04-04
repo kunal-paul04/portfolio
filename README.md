@@ -7,6 +7,7 @@ This template has been downloaded from github (link below). Thanks to Sven and D
 <br>
 Find :
 - repository here: https://github.com/CreatorGhost/Portfolio
+<br>
 - YouTube video here: https://www.youtube.com/watch?v=Zq7TQTabG34&t=4s
 
 ## Run the app
