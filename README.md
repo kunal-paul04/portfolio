@@ -5,7 +5,7 @@ Create a Portfolio in minutes with Python and HTML. This is my personal portfoli
 This template has been downloaded from github (link below). Thanks to Sven and Dennis Ivy for great tutorial. 😊
 
 <br>
-Find :
+Find :<br>
 - repository here: https://github.com/CreatorGhost/Portfolio
 <br>
 - YouTube video here: https://www.youtube.com/watch?v=Zq7TQTabG34&t=4s
