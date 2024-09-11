@@ -92,3 +92,20 @@ def tech_skill(item) -> dict:
 
 def tech_skill_list(items) -> list:
     return [tech_skill(item) for item in items]
+
+
+# schema for projects
+def projects(item) -> dict:
+    return {
+        "id": str(item["_id"]),
+        "title": item["title"],
+        "category": item["category"],
+        "technology": item["technology"],
+        "link": item["link"],
+        "tag": item["tag"],
+        "image": item["image"]
+    }
+
+
+def project_list(items) -> list:
+    return [projects(item) for item in items]

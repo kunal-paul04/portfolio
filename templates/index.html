@@ -201,7 +201,7 @@
             <h3 class="h3">Work Experience</h3>
           </div>
           <ol class="timeline-list">
-            {% for work in work_list %}
+            {% for work in work_list|reverse %}
             <li class="timeline-item">
               <h4 class="h4 timeline-item-title">{{ work.designation }} @{{ work.company }}</h4>
               <span>{{ work.duration }}</span>
@@ -241,7 +241,7 @@
               <button class="active" data-filter-btn>All</button>
             </li>
             <li class="filter-item">
-              <button data-filter-btn>Work</button>
+              <button data-filter-btn>Professional</button>
             </li>
             <li class="filter-item">
               <button data-filter-btn>Personal</button>
@@ -259,7 +259,7 @@
                 <button data-select-item>All</button>
               </li>
               <li class="select-item">
-                <button data-select-item>Work</button>
+                <button data-select-item>Professional</button>
               </li>
               <li class="select-item">
                 <button data-select-item>Personal</button>
@@ -267,21 +267,21 @@
             </ul>
           </div>
           <ul class="project-list">
-<!--            {% for project in projects %}-->
-            <li class="project-item  active" data-filter-item data-category="project.tag">
-              <a href="project.link" target="_blank">
+            {% for project in projects|reverse %}
+            <li class="project-item  active" data-filter-item data-category="{{ project.tag  }}">
+              <a href="{{ project.link }}" target="_blank">
                 <figure class="project-img">
                   <div class="project-item-icon-box">
                     <ion-icon name="eye-outline"></ion-icon>
                   </div>
-                  <img src="../static/images/project.image" alt="fit-plus" loading="lazy">
+                  <img src="../static/images/{{ project.image }}" alt="project-image" loading="lazy">
                 </figure>
-                <h3 class="project-title">project.title</h3>
-                <p class="project-category">project.category</p>
-                <p style="padding:3px 10px;font-size: 13px;color:greenyellow">Stack : project.technology</p>
+                <h3 class="project-title">{{ project.title }}</h3>
+                <p class="project-category">{{ project.category }}</p>
+                <p style="padding:3px 10px;font-size: 13px;color:greenyellow">Stack : {{ project.technology }}</p>
               </a>
             </li>
-<!--            {% endfor %}-->
+            {% endfor %}
           </ul>
         </section>
       </article>

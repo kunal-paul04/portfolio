@@ -3,7 +3,7 @@ from fastapi.responses import HTMLResponse
 from models.intro import Intro
 from models.resume import Resume
 from lib.mongo_lib import database_connection
-from schemas.schema import intro_list, intro, certificate_list_entity, certification, skillset_list, skillset, resume, education_list, education, work_list, work, tech_skill_list, tech_skill
+from schemas.schema import intro_list, intro, certificate_list_entity, certification, skillset_list, skillset, resume, education_list, education, work_list, work, tech_skill_list, tech_skill, project_list, projects
 from fastapi.templating import Jinja2Templates
 
 route = APIRouter()
@@ -21,5 +21,6 @@ async def read_item(request: Request):
     education_list = conn.portfolio.education.find({})
     work_list = conn.portfolio.job.find({})
     tech_skill = conn.portfolio.tech_skill.find({})
-    return templates.TemplateResponse(request=request, name="index.html", context={"intro": about, "resume": resume, "skillset": skillset, "certificates": certificates, "education_list": education_list, "work_list": work_list, "tech_skill": tech_skill})
+    projects = conn.portfolio.projects.find({})
+    return templates.TemplateResponse(request=request, name="index.html", context={"intro": about, "resume": resume, "skillset": skillset, "certificates": certificates, "education_list": education_list, "work_list": work_list, "tech_skill": tech_skill, "projects": projects})
 
