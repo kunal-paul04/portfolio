@@ -1,2 +1,6 @@
-Flask
-gunicorn
+fastapi
+uvicorn
+jinja2
+python-dotenv
+motor
+pydantic
