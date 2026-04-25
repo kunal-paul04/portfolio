@@ -21,7 +21,6 @@ app.include_router(auth.router, prefix="/api/auth", tags=["auth"])
 # Page Route
 @app.get("/", response_class=HTMLResponse)
 async def index(request: Request):
-    # return templates.TemplateResponse("index.html", {"request": request})
     return templates.TemplateResponse(
         "index.html",
         {
@@ -30,6 +29,11 @@ async def index(request: Request):
     )
 
 
-# @app.get("/admin", response_class=HTMLResponse)
-# async def admin_page(request: Request):
-#     return templates.TemplateResponse(request, "admin.html")
+@app.get("/admin", response_class=HTMLResponse)
+async def admin_page(request: Request):
+    return templates.TemplateResponse(
+        "admin.html",
+        {
+            "request": request
+        }
+    )
