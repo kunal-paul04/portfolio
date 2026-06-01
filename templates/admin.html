@@ -433,7 +433,7 @@ body::before{content:'';position:fixed;inset:0;z-index:9990;background:repeating
               <label for="c-available">Availability Status</label>
               <div class="switch-row">
                 <span class="switch-label">Show "Open to Opportunities" badge on portfolio</span>
-                <label class="switch"><input type="checkbox" id="c-available" checked><span class="switch-slider"></span></label>
+                <label class="switch" aria-label="Toggle availability status"><input type="checkbox" id="c-available" checked><span class="switch-slider"></span></label>
               </div>
             </div>
           </div>
@@ -567,7 +567,7 @@ if(window.matchMedia('(hover:hover)').matches){
 async function api(url, method='GET', body=null) {
   const headers = {'Content-Type':'application/json'};
   if (method !== 'GET') headers['X-CSRF-Token'] = CSRF_TOKEN;
-  const opts = {method, headers, credentials:'include'};
+  const opts = {method, headers, credentials:'same-origin'};
   if (body) opts.body = JSON.stringify(body);
   const r = await fetch(url, opts);
   if (r.status === 401) { window.location.href = '/admin'; throw new Error('Session expired'); }

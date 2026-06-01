@@ -1,7 +1,6 @@
 import os
 
 from fastapi import FastAPI, Request
-from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
@@ -33,11 +32,27 @@ app.mount(
 templates = Jinja2Templates(directory=os.path.join(BASE_DIR, "templates"))
 
 # ── Secure response headers ───────────────────────────────────────────────────
+# CSP: inline scripts/styles are needed by the templates; Google Fonts + ibb.co
+# images are external resources explicitly listed.
+_CSP = (
+    "default-src 'self'; "
+    "script-src 'self' 'unsafe-inline'; "
+    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; "
+    "font-src 'self' https://fonts.gstatic.com; "
+    "img-src 'self' https://i.ibb.co data: blob:; "
+    "connect-src 'self'; "
+    "frame-ancestors 'none'; "
+    "base-uri 'self'; "
+    "form-action 'self';"
+)
+
+
 class SecurityHeadersMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next) -> Response:
         response = await call_next(request)
         response.headers.update(
             {
+                "Content-Security-Policy": _CSP,
                 "X-Content-Type-Options": "nosniff",
                 "X-Frame-Options": "DENY",
                 "X-XSS-Protection": "1; mode=block",
@@ -49,16 +64,9 @@ class SecurityHeadersMiddleware(BaseHTTPMiddleware):
 
 
 app.add_middleware(SecurityHeadersMiddleware)
-
-# ── CORS (added last so it is outermost — handles preflight before anything else)
-# allow_origins cannot be ["*"] when allow_credentials=True
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=settings.CORS_ORIGINS,
-    allow_credentials=True,
-    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allow_headers=["Content-Type", "X-CSRF-Token"],
-)
+# No CORSMiddleware: the portfolio and its admin API are served from the same
+# origin on Vercel, so cross-origin headers are unnecessary and their presence
+# with allow_credentials=True would be a misconfiguration signal.
 
 # ── API routers ───────────────────────────────────────────────────────────────
 app.include_router(auth.router, prefix="/api/auth", tags=["auth"])
