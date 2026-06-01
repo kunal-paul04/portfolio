@@ -659,10 +659,12 @@ footer {
   <div class="hero-grid-bg"></div>
   <div class="hero-glow"></div>
   <div class="hero-inner">
+    {% if contact.get('available', True) %}
     <div class="status-bar">
       <div class="status-dot"></div>
       Available for new opportunities
     </div>
+    {% endif %}
     <h1 class="hero-name">
       Kunal<br><span class="hl">Kanti Paul</span>
     </h1>
@@ -674,7 +676,9 @@ footer {
       at Digital India Corporation. Architect of platforms used by millions — DigiLocker, MY Bharat, NAD.
     </p>
     <div class="hero-btns">
-      <a href="https://drive.google.com/file/d/1qvV6Kvmmz1DjzNZ7C5g3Nl5Q3w6RcTm5/view?usp=sharing" target="_blank" class="btn btn-green">$ download_resume.pdf</a>
+      {% if contact.get('resume') %}
+      <a href="{{ contact.resume }}" target="_blank" class="btn btn-green">$ download_resume.pdf</a>
+      {% endif %}
       <a href="#contact" class="btn btn-ghost">get_in_touch() →</a>
     </div>
     <div class="hero-stats">
@@ -701,11 +705,10 @@ footer {
       <div class="term-line"><span class="term-out">&nbsp;&nbsp;<span class="term-key">"name"</span>: <span class="term-str">"Kunal Kanti Paul"</span>,</span></div>
       <div class="term-line"><span class="term-out">&nbsp;&nbsp;<span class="term-key">"role"</span>: <span class="term-str">"Deputy Manager, Software Development"</span>,</span></div>
       <div class="term-line"><span class="term-out">&nbsp;&nbsp;<span class="term-key">"org"</span>: <span class="term-str">"Digital India Corporation · MeitY"</span>,</span></div>
-      <div class="term-line"><span class="term-out">&nbsp;&nbsp;<span class="term-key">"location"</span>: <span class="term-str">"Guwahati, Assam, India"</span>,</span></div>
+      <div class="term-line"><span class="term-out">&nbsp;&nbsp;<span class="term-key">"location"</span>: <span class="term-str">"{{ contact.get('location', 'Guwahati, Assam, India') }}"</span>,</span></div>
       <div class="term-line"><span class="term-out">&nbsp;&nbsp;<span class="term-key">"experience_years"</span>: <span class="term-num">5</span>,</span></div>
-      <div class="term-line"><span class="term-out">&nbsp;&nbsp;<span class="term-key">"education"</span>: <span class="term-str">"MCA · Assam Science &amp; Technology University"</span>,</span></div>
       <div class="term-line"><span class="term-out">&nbsp;&nbsp;<span class="term-key">"stack"</span>: [<span class="term-str">"Python"</span>, <span class="term-str">"PHP"</span>, <span class="term-str">"FastAPI"</span>, <span class="term-str">"AWS"</span>, <span class="term-str">"Docker"</span>],</span></div>
-      <div class="term-line"><span class="term-out">&nbsp;&nbsp;<span class="term-key">"open_to_work"</span>: <span class="term-num">true</span></span></div>
+      <div class="term-line"><span class="term-out">&nbsp;&nbsp;<span class="term-key">"open_to_work"</span>: <span class="term-num">{{ 'true' if contact.get('available', True) else 'false' }}</span></span></div>
       <div class="term-line"><span class="term-out">}</span></div>
       <br>
       <div class="term-line"><span class="term-prompt">$</span><span class="term-cmd"> <span class="term-comment"># type a command below (try: help, skills, contact, projects)</span></span></div>
@@ -721,42 +724,43 @@ footer {
 <section id="skills">
   <div class="s-label reveal">skills &amp; stack</div>
   <h2 class="s-title reveal" style="transition-delay:0.1s">What I <span>work with</span></h2>
+  {% set cat_order = ["Backend", "Frontend", "DevOps & Cloud", "Tools & Infra"] %}
   <div class="skills-layout">
     <div>
-      <div class="skill-category reveal" style="transition-delay:0.15s">
-        <div class="skill-cat-name">Backend</div>
-        <div class="skill-item"><div class="skill-header"><span>Python</span><span class="skill-pct">95%</span></div><div class="skill-bar-bg"><div class="skill-bar-fill" data-w="95"></div></div></div>
-        <div class="skill-item"><div class="skill-header"><span>PHP (CodeIgniter)</span><span class="skill-pct">90%</span></div><div class="skill-bar-bg"><div class="skill-bar-fill" data-w="90"></div></div></div>
-        <div class="skill-item"><div class="skill-header"><span>FastAPI / Flask</span><span class="skill-pct">92%</span></div><div class="skill-bar-bg"><div class="skill-bar-fill" data-w="92"></div></div></div>
-        <div class="skill-item"><div class="skill-header"><span>MySQL / PostgreSQL</span><span class="skill-pct">85%</span></div><div class="skill-bar-bg"><div class="skill-bar-fill" data-w="85"></div></div></div>
-      </div>
-      <div class="skill-category reveal" style="transition-delay:0.2s">
-        <div class="skill-cat-name">Frontend</div>
-        <div class="skill-item"><div class="skill-header"><span>React JS</span><span class="skill-pct">75%</span></div><div class="skill-bar-bg"><div class="skill-bar-fill" data-w="75"></div></div></div>
-        <div class="skill-item"><div class="skill-header"><span>HTML / CSS / JS</span><span class="skill-pct">85%</span></div><div class="skill-bar-bg"><div class="skill-bar-fill" data-w="85"></div></div></div>
-      </div>
+      {% for cat in cat_order[:2] %}
+        {% if skills_by_cat.get(cat) %}
+        <div class="skill-category reveal" style="transition-delay:{{ '%.2f' | format(loop.index0 * 0.05 + 0.15) }}s">
+          <div class="skill-cat-name">{{ cat }}</div>
+          {% for skill in skills_by_cat[cat] %}
+          <div class="skill-item">
+            <div class="skill-header"><span>{{ skill.name }}</span><span class="skill-pct">{{ skill.pct }}%</span></div>
+            <div class="skill-bar-bg"><div class="skill-bar-fill" data-w="{{ skill.pct }}"></div></div>
+          </div>
+          {% endfor %}
+        </div>
+        {% endif %}
+      {% endfor %}
     </div>
     <div>
-      <div class="skill-category reveal" style="transition-delay:0.25s">
-        <div class="skill-cat-name">DevOps &amp; Cloud</div>
-        <div class="skill-item"><div class="skill-header"><span>AWS (S3, EC2, Lambda)</span><span class="skill-pct">85%</span></div><div class="skill-bar-bg"><div class="skill-bar-fill" data-w="85"></div></div></div>
-        <div class="skill-item"><div class="skill-header"><span>Docker / Microservices</span><span class="skill-pct">88%</span></div><div class="skill-bar-bg"><div class="skill-bar-fill" data-w="88"></div></div></div>
-        <div class="skill-item"><div class="skill-header"><span>Apache Airflow</span><span class="skill-pct">80%</span></div><div class="skill-bar-bg"><div class="skill-bar-fill" data-w="80"></div></div></div>
-      </div>
-      <div class="skill-category reveal" style="transition-delay:0.3s">
-        <div class="skill-cat-name">Tools &amp; Infra</div>
-        <div class="skill-item"><div class="skill-header"><span>ELK Stack</span><span class="skill-pct">82%</span></div><div class="skill-bar-bg"><div class="skill-bar-fill" data-w="82"></div></div></div>
-        <div class="skill-item"><div class="skill-header"><span>Redis / RabbitMQ</span><span class="skill-pct">80%</span></div><div class="skill-bar-bg"><div class="skill-bar-fill" data-w="80"></div></div></div>
-        <div class="skill-item"><div class="skill-header"><span>Git / CI-CD</span><span class="skill-pct">88%</span></div><div class="skill-bar-bg"><div class="skill-bar-fill" data-w="88"></div></div></div>
-      </div>
+      {% for cat in cat_order[2:] %}
+        {% if skills_by_cat.get(cat) %}
+        <div class="skill-category reveal" style="transition-delay:{{ '%.2f' | format(loop.index0 * 0.05 + 0.25) }}s">
+          <div class="skill-cat-name">{{ cat }}</div>
+          {% for skill in skills_by_cat[cat] %}
+          <div class="skill-item">
+            <div class="skill-header"><span>{{ skill.name }}</span><span class="skill-pct">{{ skill.pct }}%</span></div>
+            <div class="skill-bar-bg"><div class="skill-bar-fill" data-w="{{ skill.pct }}"></div></div>
+          </div>
+          {% endfor %}
+        </div>
+        {% endif %}
+      {% endfor %}
     </div>
   </div>
   <div class="skill-tags-wrap reveal" style="transition-delay:0.35s">
-    <span class="stag">Python</span><span class="stag">PHP</span><span class="stag">FastAPI</span><span class="stag">Flask</span>
-    <span class="stag">React</span><span class="stag">Docker</span><span class="stag">AWS S3</span><span class="stag">AWS EC2</span>
-    <span class="stag">Redis</span><span class="stag">RabbitMQ</span><span class="stag">ELK Stack</span><span class="stag">Airflow</span>
-    <span class="stag">MySQL</span><span class="stag">CodeIgniter</span><span class="stag">Microservices</span><span class="stag">REST API</span>
-    <span class="stag">Git</span><span class="stag">Postman</span><span class="stag">Agile</span><span class="stag">Streamlit</span>
+    {% for skill in all_skills %}
+    <span class="stag">{{ skill.name }}</span>
+    {% endfor %}
   </div>
 </section>
 
@@ -765,51 +769,23 @@ footer {
   <div class="s-label reveal">experience</div>
   <h2 class="s-title reveal" style="transition-delay:0.1s">Where I've <span>worked</span></h2>
   <div class="exp-list">
-    <div class="exp-item reveal" style="transition-delay:0.15s; position:relative;">
-      <div class="exp-timeline"><div class="exp-dates">Apr 2024 — Present<span class="cur">● Current</span></div></div>
+    {% for exp in experience %}
+    <div class="exp-item reveal" style="transition-delay:{{ '%.2f' | format(loop.index0 * 0.05 + 0.15) }}s; position:relative;">
+      <div class="exp-timeline">
+        <div class="exp-dates">{{ exp.start }} — {{ exp.end }}
+          {% if exp.end == 'Present' %}<span class="cur">● Current</span>{% endif %}
+        </div>
+      </div>
       <div class="exp-body">
-        <div class="exp-role">Deputy Manager, Software Development</div>
-        <div class="exp-company">Digital India Corporation · MeitY</div>
-        <div class="exp-desc">Spearheaded design &amp; deployment of DigiLocker, NAD, ABC, and MY Bharat serving millions. Engineered scalable microservices with AWS S3, Docker, FastAPI. Orchestrated workflows with Apache Airflow, boosting automation and reliability.</div>
-        <div class="exp-chips"><span class="chip">Python</span><span class="chip">FastAPI</span><span class="chip">AWS</span><span class="chip">Docker</span><span class="chip">ELK</span><span class="chip">RabbitMQ</span><span class="chip">Airflow</span></div>
+        <div class="exp-role">{{ exp.role }}</div>
+        <div class="exp-company">{{ exp.company }}</div>
+        <div class="exp-desc">{{ exp.desc }}</div>
+        <div class="exp-chips">
+          {% for tag in exp.tags %}<span class="chip">{{ tag }}</span>{% endfor %}
+        </div>
       </div>
     </div>
-    <div class="exp-item reveal" style="transition-delay:0.2s; position:relative;">
-      <div class="exp-timeline"><div class="exp-dates">Feb 2023 — Apr 2024</div></div>
-      <div class="exp-body">
-        <div class="exp-role">Assistant Manager, Software Development</div>
-        <div class="exp-company">Digital India Corporation · MeitY</div>
-        <div class="exp-desc">Led testing framework resolving 200+ critical bugs before launch. Designed government UI used by 100K+ citizens. Architected complex client-server solutions boosting customer satisfaction significantly.</div>
-        <div class="exp-chips"><span class="chip">Python</span><span class="chip">PHP</span><span class="chip">QA</span><span class="chip">UI Design</span></div>
-      </div>
-    </div>
-    <div class="exp-item reveal" style="transition-delay:0.25s; position:relative;">
-      <div class="exp-timeline"><div class="exp-dates">Mar 2022 — Feb 2023</div></div>
-      <div class="exp-body">
-        <div class="exp-role">Software Developer</div>
-        <div class="exp-company">Digital India Corporation · NeSDA</div>
-        <div class="exp-desc">Worked on DigiLocker and NAD. Reduced manual data entry by 50%. Led third-party API integration increasing user engagement by 20%. Identified and resolved critical software bugs ensuring optimal reliability.</div>
-        <div class="exp-chips"><span class="chip">DigiLocker</span><span class="chip">NAD</span><span class="chip">API Integration</span></div>
-      </div>
-    </div>
-    <div class="exp-item reveal" style="transition-delay:0.3s; position:relative;">
-      <div class="exp-timeline"><div class="exp-dates">Dec 2020 — Feb 2022</div></div>
-      <div class="exp-body">
-        <div class="exp-role">Digital Marketing Executive</div>
-        <div class="exp-company">D.R. Brijmohan &amp; Sons Pvt. Ltd.</div>
-        <div class="exp-desc">Planned and executed web, SEO, and social campaigns. Boosted social media engagement by 45%. Improved conversion rates with A/B testing and UX best practices.</div>
-        <div class="exp-chips"><span class="chip">SEO</span><span class="chip">A/B Testing</span><span class="chip">Email Marketing</span></div>
-      </div>
-    </div>
-    <div class="exp-item reveal" style="transition-delay:0.35s; position:relative;">
-      <div class="exp-timeline"><div class="exp-dates">Dec 2018 — Nov 2020</div></div>
-      <div class="exp-body">
-        <div class="exp-role">Software Developer</div>
-        <div class="exp-company">Technowell Services Pvt. Ltd.</div>
-        <div class="exp-desc">Built customized software for diverse clients with PHP &amp; MySQL. Enhanced UX with HTML/CSS interfaces. Integrated third-party services and optimized AJAX and JavaScript features.</div>
-        <div class="exp-chips"><span class="chip">PHP</span><span class="chip">MySQL</span><span class="chip">HTML/CSS</span><span class="chip">JavaScript</span></div>
-      </div>
-    </div>
+    {% endfor %}
   </div>
 </section>
 
@@ -823,105 +799,25 @@ footer {
     <button class="flt" data-f="professional">professional</button>
   </div>
   <div class="proj-grid">
-    <a href="https://websec-tester.onrender.com/" target="_blank" class="proj-card reveal" data-tag="personal" style="transition-delay:0.05s">
-      <img src="https://i.ibb.co/hJVn0vK7/websec-tester.png" alt="WEBSec-Tester" loading="lazy">
+    {% for proj in projects %}
+    <a href="{{ proj.url }}" target="_blank" rel="noopener noreferrer"
+       class="proj-card reveal" data-tag="{{ proj.cat }}"
+       style="transition-delay:{{ '%.2f' | format((loop.index0 % 3) * 0.05 + 0.05) }}s">
+      <img src="{{ proj.img }}" alt="{{ proj.name }}" loading="lazy">
       <div class="proj-overlay">
-        <div class="proj-badge">Personal</div>
-        <div class="proj-num">01</div>
-        <div class="proj-tags"><span class="ptag">Python</span><span class="ptag">FastAPI</span><span class="ptag">Jinja2</span><span class="ptag">Docker</span></div>
-        <div class="proj-title">WEBSec-Tester</div>
-        <div class="proj-type">Fullstack · Security Tool</div>
+        <div class="proj-badge{% if proj.cat == 'professional' %} pro{% endif %}">
+          {{ 'Professional' if proj.cat == 'professional' else 'Personal' }}
+        </div>
+        <div class="proj-num">{{ '%02d' | format(loop.index) }}</div>
+        <div class="proj-tags">
+          {% for tag in proj.tags %}<span class="ptag">{{ tag }}</span>{% endfor %}
+        </div>
+        <div class="proj-title">{{ proj.name }}</div>
+        <div class="proj-type">{{ proj.type }}</div>
         <div class="proj-arrow">↗</div>
       </div>
     </a>
-    <a href="https://github.com/satishsinha/streamify_project" target="_blank" class="proj-card reveal" data-tag="personal" style="transition-delay:0.1s">
-      <img src="https://i.ibb.co/Rgsw85d/streamify.jpg" alt="Streamify" loading="lazy">
-      <div class="proj-overlay">
-        <div class="proj-badge">Personal</div>
-        <div class="proj-num">02</div>
-        <div class="proj-tags"><span class="ptag">React JS</span><span class="ptag">FastAPI</span></div>
-        <div class="proj-title">Streamify</div>
-        <div class="proj-type">Fullstack</div>
-        <div class="proj-arrow">↗</div>
-      </div>
-    </a>
-    <a href="https://github.com/satishsinha/TranscodePlus" target="_blank" class="proj-card reveal" data-tag="personal" style="transition-delay:0.15s">
-      <img src="https://i.ibb.co/fGQxc9W/transcode.jpg" alt="TranscodePlus" loading="lazy">
-      <div class="proj-overlay">
-        <div class="proj-badge">Personal</div>
-        <div class="proj-num">03</div>
-        <div class="proj-tags"><span class="ptag">FastAPI</span></div>
-        <div class="proj-title">TranscodePlus</div>
-        <div class="proj-type">Backend</div>
-        <div class="proj-arrow">↗</div>
-      </div>
-    </a>
-    <a href="https://github.com/kunal-paul04/OneAccess" target="_blank" class="proj-card reveal" data-tag="personal" style="transition-delay:0.2s">
-      <img src="https://i.ibb.co/5kMNFJk/oneaccess.jpg" alt="Oneaccess" loading="lazy">
-      <div class="proj-overlay">
-        <div class="proj-badge">Personal</div>
-        <div class="proj-num">04</div>
-        <div class="proj-tags"><span class="ptag">React JS</span><span class="ptag">FastAPI</span></div>
-        <div class="proj-title">Oneaccess</div>
-        <div class="proj-type">Fullstack</div>
-        <div class="proj-arrow">↗</div>
-      </div>
-    </a>
-    <a href="https://kunal-paul-resume.streamlit.app/" target="_blank" class="proj-card reveal" data-tag="personal" style="transition-delay:0.25s">
-      <img src="https://i.ibb.co/tcMMFNj/streamlet-resume.png" alt="Streamlet Resume" loading="lazy">
-      <div class="proj-overlay">
-        <div class="proj-badge">Personal</div>
-        <div class="proj-num">05</div>
-        <div class="proj-tags"><span class="ptag">Python</span><span class="ptag">Streamlit</span></div>
-        <div class="proj-title">Streamlet Resume</div>
-        <div class="proj-type">Fullstack</div>
-        <div class="proj-arrow">↗</div>
-      </div>
-    </a>
-    <a href="https://mybharat.gov.in/" target="_blank" class="proj-card reveal" data-tag="professional" style="transition-delay:0.05s">
-      <img src="https://i.ibb.co/cC9fj1g/mybharat.png" alt="MYBharat" loading="lazy">
-      <div class="proj-overlay">
-        <div class="proj-badge pro">Professional</div>
-        <div class="proj-num">06</div>
-        <div class="proj-tags"><span class="ptag">Python</span><span class="ptag">Flask API</span></div>
-        <div class="proj-title">MY Bharat</div>
-        <div class="proj-type">Backend · Account Service</div>
-        <div class="proj-arrow">↗</div>
-      </div>
-    </a>
-    <a href="https://cbse.digitallocker.gov.in/" target="_blank" class="proj-card reveal" data-tag="professional" style="transition-delay:0.1s">
-      <img src="https://i.ibb.co/2qLnY1c/parinaam-manjusha.png" alt="Parinaam Manjusha" loading="lazy">
-      <div class="proj-overlay">
-        <div class="proj-badge pro">Professional</div>
-        <div class="proj-num">07</div>
-        <div class="proj-tags"><span class="ptag">PHP</span><span class="ptag">CodeIgniter</span></div>
-        <div class="proj-title">Parinaam Manjusha</div>
-        <div class="proj-type">Fullstack</div>
-        <div class="proj-arrow">↗</div>
-      </div>
-    </a>
-    <a href="https://nad.digilocker.gov.in/" target="_blank" class="proj-card reveal" data-tag="professional" style="transition-delay:0.15s">
-      <img src="https://i.ibb.co/bW44DZ4/nad.png" alt="NAD" loading="lazy">
-      <div class="proj-overlay">
-        <div class="proj-badge pro">Professional</div>
-        <div class="proj-num">08</div>
-        <div class="proj-tags"><span class="ptag">PHP</span><span class="ptag">CodeIgniter</span><span class="ptag">Python</span></div>
-        <div class="proj-title">National Academic Depository</div>
-        <div class="proj-type">Backend · Account Service &amp; API</div>
-        <div class="proj-arrow">↗</div>
-      </div>
-    </a>
-    <a href="https://www.digilocker.gov.in/" target="_blank" class="proj-card reveal" data-tag="professional" style="transition-delay:0.2s">
-      <img src="https://i.ibb.co/jMFsw3K/digilocker.png" alt="DigiLocker" loading="lazy">
-      <div class="proj-overlay">
-        <div class="proj-badge pro">Professional</div>
-        <div class="proj-num">09</div>
-        <div class="proj-tags"><span class="ptag">PHP</span><span class="ptag">Python</span><span class="ptag">Flask API</span></div>
-        <div class="proj-title">DigiLocker</div>
-        <div class="proj-type">Backend · Account Service</div>
-        <div class="proj-arrow">↗</div>
-      </div>
-    </a>
+    {% endfor %}
   </div>
 </section>
 
@@ -930,10 +826,16 @@ footer {
   <div class="s-label reveal">education</div>
   <h2 class="s-title reveal" style="transition-delay:0.1s">Academic <span>background</span></h2>
   <div class="edu-grid">
-    <div class="edu-card reveal" style="transition-delay:0.15s"><div class="edu-year">2018 · MCA</div><div class="edu-deg">Master of Computer Application</div><div class="edu-inst">Assam Science and Technology University, Guwahati</div><div class="edu-grade">CGPA <strong>7.58</strong></div></div>
-    <div class="edu-card reveal" style="transition-delay:0.2s"><div class="edu-year">2015 · BCA</div><div class="edu-deg">Bachelor of Computer Application</div><div class="edu-inst">Gauhati University, Guwahati</div><div class="edu-grade">CGPA <strong>7.0</strong></div></div>
-    <div class="edu-card reveal" style="transition-delay:0.25s"><div class="edu-year">2012 · HSC</div><div class="edu-deg">Higher Secondary — Science Stream</div><div class="edu-inst">Kendriya Vidyalaya Narangi, Guwahati · CBSE</div></div>
-    <div class="edu-card reveal" style="transition-delay:0.3s"><div class="edu-year">2010 · SSC</div><div class="edu-deg">Secondary School Certificate</div><div class="edu-inst">Kendriya Vidyalaya Narangi, Guwahati · CBSE</div></div>
+    {% for edu in education %}
+    <div class="edu-card reveal" style="transition-delay:{{ '%.2f' | format(loop.index0 * 0.05 + 0.15) }}s">
+      <div class="edu-year">{{ edu.year }} · {{ edu.short }}</div>
+      <div class="edu-deg">{{ edu.deg }}</div>
+      <div class="edu-inst">{{ edu.inst }}</div>
+      {% if edu.grade %}
+      <div class="edu-grade">CGPA <strong>{{ edu.grade }}</strong></div>
+      {% endif %}
+    </div>
+    {% endfor %}
   </div>
 </section>
 
@@ -944,18 +846,39 @@ footer {
   <div class="contact-grid">
     <div>
       <div class="contact-items reveal" style="transition-delay:0.15s">
-        <div class="c-item"><div class="c-label">// email</div><a href="mailto:kunalkantipaul@gmail.com" class="c-val">kunalkantipaul@gmail.com</a></div>
-        <div class="c-item"><div class="c-label">// phone</div><a href="tel:+919678139456" class="c-val">+91 96781 39456</a></div>
-        <div class="c-item"><div class="c-label">// location</div><span class="c-val">Guwahati, Assam, India</span></div>
-        <div class="c-item"><div class="c-label">// resume</div><a href="https://drive.google.com/file/d/1qvV6Kvmmz1DjzNZ7C5g3Nl5Q3w6RcTm5/view?usp=sharing" target="_blank" class="btn btn-green" style="margin-top:0.3rem;display:inline-flex">$ download_resume</a></div>
+        {% if contact.get('email') %}
+        <div class="c-item">
+          <div class="c-label">// email</div>
+          <a href="mailto:{{ contact.email }}" class="c-val">{{ contact.email }}</a>
+        </div>
+        {% endif %}
+        {% if contact.get('phone1') %}
+        <div class="c-item">
+          <div class="c-label">// phone</div>
+          <a href="tel:{{ contact.phone1 }}" class="c-val">{{ contact.phone1 }}</a>
+        </div>
+        {% endif %}
+        {% if contact.get('location') %}
+        <div class="c-item">
+          <div class="c-label">// location</div>
+          <span class="c-val">{{ contact.location }}</span>
+        </div>
+        {% endif %}
+        {% if contact.get('resume') %}
+        <div class="c-item">
+          <div class="c-label">// resume</div>
+          <a href="{{ contact.resume }}" target="_blank" rel="noopener noreferrer"
+             class="btn btn-green" style="margin-top:0.3rem;display:inline-flex">$ download_resume</a>
+        </div>
+        {% endif %}
       </div>
       <div class="cert-row reveal" style="transition-delay:0.2s; margin-top:2.5rem;">
         <div class="c-label" style="margin-bottom:0.8rem">// certifications</div>
-        <a href="https://www.udemy.com/certificate/UC-80330dcb-bdf9-4f0c-b25a-cc630879448b/" target="_blank" class="cert-item">
+        <a href="https://www.udemy.com/certificate/UC-80330dcb-bdf9-4f0c-b25a-cc630879448b/" target="_blank" rel="noopener noreferrer" class="cert-item">
           <div class="cert-left"><div class="cert-platform">Udemy</div><div class="cert-name">APIs with Postman for Absolute Beginners</div></div>
           <div class="cert-arrow2">↗</div>
         </a>
-        <a href="https://www.udemy.com/certificate/UC-45f05920-7beb-4f4e-99e2-cb7093bac249/" target="_blank" class="cert-item">
+        <a href="https://www.udemy.com/certificate/UC-45f05920-7beb-4f4e-99e2-cb7093bac249/" target="_blank" rel="noopener noreferrer" class="cert-item">
           <div class="cert-left"><div class="cert-platform">Udemy</div><div class="cert-name">JavaScript ES6 Certification Course</div></div>
           <div class="cert-arrow2">↗</div>
         </a>
@@ -964,7 +887,9 @@ footer {
     <div class="contact-cta reveal" style="transition-delay:0.25s">
       <div class="cta-title">Open to new<br><span>opportunities.</span></div>
       <p class="cta-sub">Whether it's a full-time role, a contract project, or just a conversation about tech — I'm always happy to connect. Drop me a line and let's build something great together.</p>
-      <a href="mailto:kunalkantipaul@gmail.com" class="btn btn-green">send_message() →</a>
+      {% if contact.get('email') %}
+      <a href="mailto:{{ contact.email }}" class="btn btn-green">send_message() →</a>
+      {% endif %}
     </div>
   </div>
 </section>
@@ -1090,17 +1015,17 @@ const CMDS = {
 <span class="term-out"><span class="term-num">2020–2022</span> Digital Marketing   @ D.R. Brijmohan & Sons</span>
 <span class="term-out"><span class="term-num">2018–2020</span> Software Developer  @ Technowell Services</span>`,
 
-  projects: `<span class="term-out"><span class="term-comment"># 9 projects shipped</span></span>
+  projects: `<span class="term-out"><span class="term-comment"># {{ projects | length }} projects shipped</span></span>
 <span class="term-out"><span class="term-str">"WEBSec-Tester"</span>  → <a href="https://websec-tester.onrender.com/" target="_blank" style="color:var(--cyan)">live ↗</a></span>
 <span class="term-out"><span class="term-str">"DigiLocker"</span>     → <a href="https://www.digilocker.gov.in/" target="_blank" style="color:var(--cyan)">live ↗</a></span>
 <span class="term-out"><span class="term-str">"MY Bharat"</span>      → <a href="https://mybharat.gov.in/" target="_blank" style="color:var(--cyan)">live ↗</a></span>
 <span class="term-out"><span class="term-str">"NAD"</span>            → <a href="https://nad.digilocker.gov.in/" target="_blank" style="color:var(--cyan)">live ↗</a></span>
 <span class="term-out"><span class="term-comment"># scroll to #projects for full list</span></span>`,
 
-  contact: `<span class="term-out"><span class="term-key">email:</span>    <a href="mailto:kunalkantipaul@gmail.com" style="color:var(--cyan)">kunalkantipaul@gmail.com</a></span>
-<span class="term-out"><span class="term-key">phone:</span>    <span class="term-str">+91 96781 39456</span></span>
-<span class="term-out"><span class="term-key">location:</span> <span class="term-str">Guwahati, Assam, India</span></span>
-<span class="term-out"><span class="term-key">resume:</span>   <a href="https://drive.google.com/file/d/1qvV6Kvmmz1DjzNZ7C5g3Nl5Q3w6RcTm5/view?usp=sharing" target="_blank" style="color:var(--cyan)">Download PDF ↗</a></span>`,
+  contact: `<span class="term-out"><span class="term-key">email:</span>    <a href="mailto:{{ contact.get('email', '') }}" style="color:var(--cyan)">{{ contact.get('email', '') }}</a></span>
+<span class="term-out"><span class="term-key">phone:</span>    <span class="term-str">{{ contact.get('phone1', '') }}</span></span>
+<span class="term-out"><span class="term-key">location:</span> <span class="term-str">{{ contact.get('location', '') }}</span></span>
+<span class="term-out"><span class="term-key">resume:</span>   <a href="{{ contact.get('resume', '#') }}" target="_blank" style="color:var(--cyan)">Download PDF ↗</a></span>`,
 };
 
 const termBody = document.getElementById('term-body');
@@ -1141,8 +1066,7 @@ termInput.addEventListener('keydown', e => {
 
 
 document.getElementById("hiddenLink").addEventListener("click", function () {
-    const url = "/admin"; // keep it hidden here or fetch dynamically
-    window.open(url, "_blank", "noopener,noreferrer");
+    window.open("/admin", "_blank", "noopener,noreferrer");
 });
 </script>
 </body>

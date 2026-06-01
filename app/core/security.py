@@ -1,26 +1,42 @@
-# app/core/security.py
+import hmac
+import secrets
+from datetime import datetime, timedelta, timezone
 
-from passlib.context import CryptContext
-from jose import jwt
-from datetime import datetime, timedelta
-import os
+import bcrypt
+from jose import jwt, JWTError
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+from app.core.config import settings
 
-SECRET = os.getenv("SECRET_KEY")
-ALGO = os.getenv("JWT_ALGO")
 
-# 🔒 Password hashing
-def hash_password(password: str):
-    return pwd_context.hash(password)
+def hash_password(password: str) -> str:
+    return bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
 
-def verify_password(plain, hashed):
-    return pwd_context.verify(plain, hashed)
 
-# 🔑 JWT
-def create_token(data: dict):
-    data.update({"exp": datetime.utcnow() + timedelta(hours=3)})
-    return jwt.encode(data, SECRET, algorithm=ALGO)
+def verify_password(plain: str, hashed: str) -> bool:
+    return bcrypt.checkpw(plain.encode(), hashed.encode())
 
-def verify_token(token):
-    return jwt.decode(token, SECRET, algorithms=[ALGO])
+
+def create_access_token(username: str) -> str:
+    now = datetime.now(timezone.utc)
+    payload = {
+        "sub": username,
+        "iat": now,
+        "exp": now + timedelta(hours=settings.JWT_EXPIRE_HOURS),
+    }
+    return jwt.encode(payload, settings.SECRET_KEY, algorithm=settings.JWT_ALGO)
+
+
+def decode_access_token(token: str) -> dict:
+    """Decode and validate a JWT. Raises JWTError on failure."""
+    return jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.JWT_ALGO])
+
+
+def generate_csrf_token() -> str:
+    return secrets.token_urlsafe(32)
+
+
+def csrf_tokens_equal(cookie_val: str, header_val: str) -> bool:
+    """Constant-time comparison to prevent timing attacks."""
+    if not cookie_val or not header_val:
+        return False
+    return hmac.compare_digest(cookie_val, header_val)
