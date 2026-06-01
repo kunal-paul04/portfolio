@@ -42,7 +42,8 @@ body{background:var(--bg);color:var(--text);font-family:'JetBrains Mono',monospa
 #cur{width:6px;height:6px;background:var(--green);border-radius:50%;position:fixed;z-index:9999;pointer-events:none;box-shadow:0 0 8px var(--green);transition:transform .1s}
 #cur-ring{width:26px;height:26px;border:1px solid rgba(74,222,128,.35);border-radius:50%;position:fixed;z-index:9998;pointer-events:none;transition:transform .3s cubic-bezier(.23,1,.32,1),width .2s,height .2s,border-color .2s}
 #cur-ring.link{width:40px;height:40px;border-color:rgba(74,222,128,.6)}
-@media(hover:none){#cur,#cur-ring{display:none}body{cursor:auto}}
+@media(hover:none){
+#cur,#cur-ring{display:none}body{cursor:auto}}
 
 body::before{content:'';position:fixed;inset:0;z-index:9990;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.025) 2px,rgba(0,0,0,.025) 4px);pointer-events:none}
 
@@ -283,6 +284,8 @@ body::before{content:'';position:fixed;inset:0;z-index:9990;background:repeating
 <div id="cur"></div>
 <div id="cur-ring"></div>
 <div class="toast-wrap" id="toasts"></div>
+
+{% if authenticated %}
 <div class="overlay" id="overlay"></div>
 <div class="confirm-box" id="confirmBox">
   <div class="confirm-inner">
@@ -295,41 +298,7 @@ body::before{content:'';position:fixed;inset:0;z-index:9990;background:repeating
   </div>
 </div>
 
-<div class="page active" id="page-login">
-  <div class="login-grid-bg"></div>
-  <div class="login-glow"></div>
-  <div class="login-box">
-    <div class="login-brand">
-      <div class="login-logo">portfolio_admin</div>
-      <div class="login-sub">Portfolio Content Management System</div>
-    </div>
-    <div class="login-window">
-      <div class="win-bar">
-        <div class="wd r"></div><div class="wd y"></div><div class="wd g"></div>
-        <div class="win-title">auth.session — bash</div>
-      </div>
-      <div class="login-form">
-        <div class="form-comment"># authenticate to access your CMS</div>
-        <div class="field">
-          <div class="field-label">username</div>
-          <div class="field-wrap"><input id="login-user" type="text" placeholder="admin" autocomplete="username" autocomplete="off" required></div>
-        </div>
-        <div class="field">
-          <div class="field-label">password</div>
-          <div class="field-wrap">
-            <input id="login-pass" type="password" placeholder="••••••••" autocomplete="current-password">
-            <button class="toggle-pw" onclick="togglePw()" id="pw-eye">👁</button>
-          </div>
-        </div>
-        <div class="login-err" id="login-err">⚠ Error: invalid credentials. try again.</div>
-        <button class="btn-login" onclick="doLogin()">$ ./login --execute</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="page" id="page-admin">
-
+<div class="page active" id="page-admin">
   <aside class="sidebar">
     <div class="sb-brand">
       <div class="sb-logo">kkp</div>
@@ -364,28 +333,19 @@ body::before{content:'';position:fixed;inset:0;z-index:9990;background:repeating
       </div>
       <div class="topbar-right">
         <div class="status-pill"><div class="spulse"></div>portfolio · live</div>
-        <a href="kunal-portfolio-v2.html" target="_blank" class="btn btn-ghost btn-sm">↗ view site</a>
+        <a href="/" target="_blank" class="btn btn-ghost btn-sm">↗ view site</a>
       </div>
     </div>
     <div class="content-area">
 
       <div class="cms-panel active" id="panel-dashboard">
         <div class="dash-stats">
-          <div class="dstat"><div class="dstat-label">Projects</div><div class="dstat-num" id="count-projects">9</div><div class="dstat-sub">total shipped</div><div class="dstat-icon">◈</div></div>
-          <div class="dstat"><div class="dstat-label">Experience</div><div class="dstat-num" id="count-exp">5</div><div class="dstat-sub">positions held</div><div class="dstat-icon">◉</div></div>
-          <div class="dstat"><div class="dstat-label">Skills</div><div class="dstat-num" id="count-skills">10</div><div class="dstat-sub">tracked</div><div class="dstat-icon">◎</div></div>
-          <div class="dstat"><div class="dstat-label">Education</div><div class="dstat-num" id="count-edu">4</div><div class="dstat-sub">qualifications</div><div class="dstat-icon">◇</div></div>
+          <div class="dstat"><div class="dstat-label">Projects</div><div class="dstat-num" id="count-projects">—</div><div class="dstat-sub">total shipped</div><div class="dstat-icon">◈</div></div>
+          <div class="dstat"><div class="dstat-label">Experience</div><div class="dstat-num" id="count-exp">—</div><div class="dstat-sub">positions held</div><div class="dstat-icon">◉</div></div>
+          <div class="dstat"><div class="dstat-label">Skills</div><div class="dstat-num" id="count-skills">—</div><div class="dstat-sub">tracked</div><div class="dstat-icon">◎</div></div>
+          <div class="dstat"><div class="dstat-label">Education</div><div class="dstat-num" id="count-edu">—</div><div class="dstat-sub">qualifications</div><div class="dstat-icon">◇</div></div>
         </div>
         <div class="dash-grid">
-          <div class="dash-card">
-            <div class="dash-card-title">recent activity</div>
-            <div class="activity-list">
-              <div class="act-item"><div class="act-dot g"></div><div class="act-text">DigiLocker entry updated</div><div class="act-time">now</div></div>
-              <div class="act-item"><div class="act-dot b"></div><div class="act-text">New project WEBSec-Tester added</div><div class="act-time">today</div></div>
-              <div class="act-item"><div class="act-dot o"></div><div class="act-text">Python skill bar updated to 95%</div><div class="act-time">today</div></div>
-              <div class="act-item"><div class="act-dot g"></div><div class="act-text">Contact email refreshed</div><div class="act-time">yesterday</div></div>
-            </div>
-          </div>
           <div class="dash-card">
             <div class="dash-card-title">quick actions</div>
             <div class="quick-links">
@@ -394,6 +354,13 @@ body::before{content:'';position:fixed;inset:0;z-index:9990;background:repeating
               <button class="ql" onclick="showPanel('skills');openDrawer('skill')"><span class="ql-icon">+</span>Add Skill</button>
               <button class="ql" onclick="showPanel('education');openDrawer('edu')"><span class="ql-icon">+</span>Add Education</button>
               <button class="ql" onclick="showPanel('contact')"><span class="ql-icon">✎</span>Edit Contact Info</button>
+            </div>
+          </div>
+          <div class="dash-card">
+            <div class="dash-card-title">live site links</div>
+            <div class="quick-links">
+              <a class="ql" href="/" target="_blank"><span class="ql-icon">↗</span>View Portfolio</a>
+              <button class="ql" onclick="loadAll()"><span class="ql-icon">↺</span>Refresh Data</button>
             </div>
           </div>
         </div>
@@ -452,18 +419,18 @@ body::before{content:'';position:fixed;inset:0;z-index:9990;background:repeating
         </div>
         <div style="max-width:600px">
           <div style="background:var(--bg2);border:1px solid var(--border2);padding:1.5rem">
-            <div class="form-row"><label>Full Name</label><input id="c-name" type="text" placeholder="Kunal Kanti Paul"></div>
-            <div class="form-row"><label>Email Address</label><input id="c-email" type="email" placeholder="kunalkantipaul@gmail.com"></div>
+            <div class="form-row"><label for="c-name">Full Name</label><input id="c-name" type="text" placeholder="Kunal Kanti Paul"></div>
+            <div class="form-row"><label for="c-email">Email Address</label><input id="c-email" type="email" placeholder="kunalkantipaul@gmail.com"></div>
             <div class="form-grid">
-              <div class="form-row"><label>Phone 1</label><input id="c-phone1" type="text" placeholder="+91 96781 39456"></div>
-              <div class="form-row"><label>Phone 2</label><input id="c-phone2" type="text" placeholder="+91 700261 3771"></div>
+              <div class="form-row"><label for="c-phone1">Phone 1</label><input id="c-phone1" type="text" placeholder="+91 96781 39456"></div>
+              <div class="form-row"><label for="c-phone2">Phone 2</label><input id="c-phone2" type="text" placeholder="+91 700261 3771"></div>
             </div>
-            <div class="form-row"><label>Location</label><input id="c-location" type="text" placeholder="Guwahati, Assam, India"></div>
-            <div class="form-row"><label>Resume URL (Google Drive)</label><input id="c-resume" type="url" placeholder="https://drive.google.com/..."></div>
-            <div class="form-row"><label>GitHub URL</label><input id="c-github" type="url" placeholder="https://github.com/kunal-paul04"></div>
-            <div class="form-row"><label>LinkedIn URL</label><input id="c-linkedin" type="url" placeholder="https://linkedin.com/in/..."></div>
+            <div class="form-row"><label for="c-location">Location</label><input id="c-location" type="text" placeholder="Guwahati, Assam, India"></div>
+            <div class="form-row"><label for="c-resume">Resume URL (Google Drive)</label><input id="c-resume" type="url" placeholder="https://drive.google.com/..."></div>
+            <div class="form-row"><label for="c-github">GitHub URL</label><input id="c-github" type="url" placeholder="https://github.com/kunal-paul04"></div>
+            <div class="form-row"><label for="c-linkedin">LinkedIn URL</label><input id="c-linkedin" type="url" placeholder="https://linkedin.com/in/..."></div>
             <div class="form-row">
-              <label>Availability Status</label>
+              <label for="c-available">Availability Status</label>
               <div class="switch-row">
                 <span class="switch-label">Show "Open to Opportunities" badge on portfolio</span>
                 <label class="switch"><input type="checkbox" id="c-available" checked><span class="switch-slider"></span></label>
@@ -476,6 +443,7 @@ body::before{content:'';position:fixed;inset:0;z-index:9990;background:repeating
   </div>
 </div>
 
+<!-- Drawers -->
 <div class="drawer" id="drawer-project">
   <div class="drawer-hd">
     <div class="drawer-title" id="drw-project-title">new_project()</div>
@@ -483,24 +451,24 @@ body::before{content:'';position:fixed;inset:0;z-index:9990;background:repeating
   </div>
   <div class="drawer-body">
     <input type="hidden" id="proj-id">
-    <div class="form-row"><label>Project Name</label><input id="proj-name" type="text" placeholder="WEBSec-Tester"></div>
+    <div class="form-row"><label for="proj-name">Project Name</label><input id="proj-name" type="text" placeholder="WEBSec-Tester"></div>
     <div class="form-grid">
-      <div class="form-row"><label>Type</label>
+      <div class="form-row"><label for="proj-type">Type</label>
         <select id="proj-type"><option>Fullstack</option><option>Backend</option><option>Frontend</option><option>Mobile</option><option>DevOps</option></select>
       </div>
-      <div class="form-row"><label>Category</label>
+      <div class="form-row"><label for="proj-cat">Category</label>
         <select id="proj-cat"><option value="personal">Personal</option><option value="professional">Professional</option></select>
       </div>
     </div>
     <div class="form-row">
-      <label>Tech Stack (press Enter to add)</label>
+      <label for="proj-tag-input">Tech Stack (press Enter to add)</label>
       <div class="tag-input-wrap" id="proj-tags-wrap">
         <input class="tag-input" id="proj-tag-input" placeholder="Python, FastAPI ...">
       </div>
     </div>
-    <div class="form-row"><label>Project URL</label><input id="proj-url" type="url" placeholder="https://..."></div>
-    <div class="form-row"><label>Thumbnail URL</label><input id="proj-img" type="url" placeholder="https://i.ibb.co/..."></div>
-    <div class="form-row"><label>Description</label><textarea id="proj-desc" placeholder="What does this project do?"></textarea></div>
+    <div class="form-row"><label for="proj-url">Project URL</label><input id="proj-url" type="url" placeholder="https://..."></div>
+    <div class="form-row"><label for="proj-img">Thumbnail URL</label><input id="proj-img" type="url" placeholder="https://i.ibb.co/..."></div>
+    <div class="form-row"><label for="proj-desc">Description</label><textarea id="proj-desc" placeholder="What does this project do?"></textarea></div>
   </div>
   <div class="drawer-foot">
     <button class="btn btn-ghost" onclick="closeDrawer('project')">cancel</button>
@@ -515,19 +483,19 @@ body::before{content:'';position:fixed;inset:0;z-index:9990;background:repeating
   </div>
   <div class="drawer-body">
     <input type="hidden" id="exp-id">
-    <div class="form-row"><label>Job Title / Role</label><input id="exp-role" type="text" placeholder="Senior Software Developer"></div>
-    <div class="form-row"><label>Company</label><input id="exp-company" type="text" placeholder="Digital India Corporation"></div>
+    <div class="form-row"><label for="exp-role">Job Title / Role</label><input id="exp-role" type="text" placeholder="Senior Software Developer"></div>
+    <div class="form-row"><label for="exp-company">Company</label><input id="exp-company" type="text" placeholder="Digital India Corporation"></div>
     <div class="form-grid">
-      <div class="form-row"><label>Start Date</label><input id="exp-start" type="text" placeholder="Mar 2022"></div>
-      <div class="form-row"><label>End Date</label><input id="exp-end" type="text" placeholder="Present"></div>
+      <div class="form-row"><label for="exp-start">Start Date</label><input id="exp-start" type="text" placeholder="Mar 2022"></div>
+      <div class="form-row"><label for="exp-end">End Date</label><input id="exp-end" type="text" placeholder="Present"></div>
     </div>
     <div class="form-row">
-      <label>Tech Stack Used</label>
+      <label for="exp-tag-input">Tech Stack Used</label>
       <div class="tag-input-wrap" id="exp-tags-wrap">
         <input class="tag-input" id="exp-tag-input" placeholder="Python, FastAPI ...">
       </div>
     </div>
-    <div class="form-row"><label>Description</label><textarea id="exp-desc" placeholder="Key responsibilities and achievements..."></textarea></div>
+    <div class="form-row"><label for="exp-desc">Description</label><textarea id="exp-desc" placeholder="Key responsibilities and achievements..."></textarea></div>
   </div>
   <div class="drawer-foot">
     <button class="btn btn-ghost" onclick="closeDrawer('exp')">cancel</button>
@@ -542,15 +510,15 @@ body::before{content:'';position:fixed;inset:0;z-index:9990;background:repeating
   </div>
   <div class="drawer-body">
     <input type="hidden" id="skill-id">
-    <div class="form-row"><label>Skill Name</label><input id="skill-name" type="text" placeholder="Python"></div>
+    <div class="form-row"><label for="skill-name">Skill Name</label><input id="skill-name" type="text" placeholder="Python"></div>
     <div class="form-grid">
-      <div class="form-row"><label>Category</label>
-        <select id="skill-cat"><option>Backend</option><option>Frontend</option><option>DevOps & Cloud</option><option>Tools & Infra</option></select>
+      <div class="form-row"><label for="skill-cat">Category</label>
+        <select id="skill-cat"><option>Backend</option><option>Frontend</option><option>DevOps &amp; Cloud</option><option>Tools &amp; Infra</option></select>
       </div>
-      <div class="form-row"><label>Proficiency % (0–100)</label><input id="skill-pct" type="number" min="0" max="100" placeholder="90"></div>
+      <div class="form-row"><label for="skill-pct">Proficiency % (0–100)</label><input id="skill-pct" type="number" min="0" max="100" placeholder="90"></div>
     </div>
     <div class="form-row">
-      <label>Level Preview</label>
+      <label for="skill-preview-bar">Level Preview</label>
       <div style="height:6px;background:var(--s2);margin-top:.5rem;position:relative">
         <div id="skill-preview-bar" style="height:100%;background:linear-gradient(90deg,var(--green2),var(--cyan));width:0%;transition:width .4s"></div>
       </div>
@@ -569,12 +537,12 @@ body::before{content:'';position:fixed;inset:0;z-index:9990;background:repeating
   </div>
   <div class="drawer-body">
     <input type="hidden" id="edu-id">
-    <div class="form-row"><label>Degree / Qualification</label><input id="edu-deg" type="text" placeholder="Master of Computer Application"></div>
-    <div class="form-row"><label>Short Label (e.g. MCA)</label><input id="edu-short" type="text" placeholder="MCA"></div>
-    <div class="form-row"><label>Institution</label><input id="edu-inst" type="text" placeholder="Assam Science and Technology University"></div>
+    <div class="form-row"><label for="edu-deg">Degree / Qualification</label><input id="edu-deg" type="text" placeholder="Master of Computer Application"></div>
+    <div class="form-row"><label for="edu-short">Short Label (e.g. MCA)</label><input id="edu-short" type="text" placeholder="MCA"></div>
+    <div class="form-row"><label for="edu-inst">Institution</label><input id="edu-inst" type="text" placeholder="Assam Science and Technology University"></div>
     <div class="form-grid">
-      <div class="form-row"><label>Year of Completion</label><input id="edu-year" type="text" placeholder="2018"></div>
-      <div class="form-row"><label>Grade / CGPA</label><input id="edu-grade" type="text" placeholder="7.58"></div>
+      <div class="form-row"><label for="edu-year">Year of Completion</label><input id="edu-year" type="text" placeholder="2018"></div>
+      <div class="form-row"><label for="edu-grade">Grade / CGPA</label><input id="edu-grade" type="text" placeholder="7.58"></div>
     </div>
   </div>
   <div class="drawer-foot">
@@ -584,6 +552,9 @@ body::before{content:'';position:fixed;inset:0;z-index:9990;background:repeating
 </div>
 
 <script>
+const CSRF_TOKEN = {{ csrf_token | tojson }};
+
+// ── Cursor ──────────────────────────────────────────────────────────────────
 const cur=document.getElementById('cur'),ring=document.getElementById('cur-ring');
 if(window.matchMedia('(hover:hover)').matches){
   let mx=0,my=0,rx=0,ry=0;
@@ -592,272 +563,250 @@ if(window.matchMedia('(hover:hover)').matches){
   setInterval(()=>{document.querySelectorAll('a,button,input,select,textarea,.ql,.dstat,.data-table tr').forEach(el=>{el.addEventListener('mouseenter',()=>ring.classList.add('link'));el.addEventListener('mouseleave',()=>ring.classList.remove('link'));});},800);
 }
 
-const CREDS={user:'admin',pass:'admin123'};
-let currentEdit={};
-
-document.getElementById('login-pass').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
-document.getElementById('login-user').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
-
-function doLogin(){
-  const u=document.getElementById('login-user').value.trim();
-  const p=document.getElementById('login-pass').value;
-  const err=document.getElementById('login-err');
-  if(u===CREDS.user&&p===CREDS.pass){
-    document.getElementById('page-login').classList.remove('active');
-    document.getElementById('page-admin').classList.add('active');
-    renderAll();
-    toast('Access granted. Welcome back, Kunal.','success');
-  } else {
-    err.classList.add('show');
-    setTimeout(()=>err.classList.remove('show'),3000);
-  }
+// ── API helper ───────────────────────────────────────────────────────────────
+async function api(url, method='GET', body=null) {
+  const headers = {'Content-Type':'application/json'};
+  if (method !== 'GET') headers['X-CSRF-Token'] = CSRF_TOKEN;
+  const opts = {method, headers, credentials:'include'};
+  if (body) opts.body = JSON.stringify(body);
+  const r = await fetch(url, opts);
+  if (r.status === 401) { window.location.href = '/admin'; throw new Error('Session expired'); }
+  if (r.status === 204) return null;
+  const data = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(data.detail || `HTTP ${r.status}`);
+  return data;
 }
 
-function doLogout(){
-  document.getElementById('page-admin').classList.remove('active');
-  document.getElementById('page-login').classList.add('active');
-  document.getElementById('login-pass').value='';
-  toast('Logged out successfully.','success');
-}
+// ── In-memory cache ──────────────────────────────────────────────────────────
+let DB = { projects:[], experience:[], skills:[], education:[], contact:{} };
 
-function togglePw(){
-  const i=document.getElementById('login-pass');
-  i.type=i.type==='password'?'text':'password';
-}
-
-function showPanel(name){
+// ── Panel navigation ─────────────────────────────────────────────────────────
+function showPanel(name) {
   document.querySelectorAll('.cms-panel').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.sb-nav button').forEach(b=>b.classList.remove('active'));
   document.getElementById('panel-'+name).classList.add('active');
   document.getElementById('nav-'+name).classList.add('active');
   document.getElementById('topbar-crumb').textContent=name;
-  if(name==='contact') loadContactForm();
+  if (name==='contact') loadContactForm();
 }
 
-let DB={
-  projects:[
-    {id:1,name:'WEBSec-Tester',type:'Fullstack',cat:'personal',tags:['Python','FastAPI','Jinja2','Docker'],url:'https://websec-tester.onrender.com/',img:'https://i.ibb.co/hJVn0vK7/websec-tester.png',desc:'A web security testing tool.'},
-    {id:2,name:'Streamify',type:'Fullstack',cat:'personal',tags:['React JS','FastAPI'],url:'https://github.com/satishsinha/streamify_project',img:'https://i.ibb.co/Rgsw85d/streamify.jpg',desc:'Streaming platform.'},
-    {id:3,name:'TranscodePlus',type:'Backend',cat:'personal',tags:['FastAPI'],url:'https://github.com/satishsinha/TranscodePlus',img:'https://i.ibb.co/fGQxc9W/transcode.jpg',desc:'Media transcoding service.'},
-    {id:4,name:'Oneaccess',type:'Fullstack',cat:'personal',tags:['React JS','FastAPI'],url:'https://github.com/kunal-paul04/OneAccess',img:'https://i.ibb.co/5kMNFJk/oneaccess.jpg',desc:'Single sign-on portal.'},
-    {id:5,name:'Streamlet Resume',type:'Fullstack',cat:'personal',tags:['Python','Streamlit'],url:'https://kunal-paul-resume.streamlit.app/',img:'https://i.ibb.co/tcMMFNj/streamlet-resume.png',desc:'Interactive resume.'},
-    {id:6,name:'MY Bharat',type:'Backend',cat:'professional',tags:['Python','Flask API'],url:'https://mybharat.gov.in/',img:'https://i.ibb.co/cC9fj1g/mybharat.png',desc:'Youth volunteering platform.'},
-    {id:7,name:'Parinaam Manjusha',type:'Fullstack',cat:'professional',tags:['PHP','CodeIgniter'],url:'https://cbse.digitallocker.gov.in/',img:'https://i.ibb.co/2qLnY1c/parinaam-manjusha.png',desc:'CBSE result repository.'},
-    {id:8,name:'NAD',type:'Backend',cat:'professional',tags:['PHP','Python','CodeIgniter'],url:'https://nad.digilocker.gov.in/',img:'https://i.ibb.co/bW44DZ4/nad.png',desc:'National Academic Depository.'},
-    {id:9,name:'DigiLocker',type:'Backend',cat:'professional',tags:['PHP','Python','Flask API'],url:'https://www.digilocker.gov.in/',img:'https://i.ibb.co/jMFsw3K/digilocker.png',desc:'National digital document wallet.'},
-  ],
-  experience:[
-    {id:1,role:'Deputy Manager, Software Development',company:'Digital India Corporation · MeitY',start:'Apr 2024',end:'Present',tags:['Python','FastAPI','AWS','Docker','ELK','RabbitMQ'],desc:'Spearheaded DigiLocker, NAD, ABC, and MY Bharat. Engineered scalable microservices.'},
-    {id:2,role:'Assistant Manager, Software Development',company:'Digital India Corporation · MeitY',start:'Feb 2023',end:'Apr 2024',tags:['Python','PHP','QA'],desc:'Led testing framework resolving 200+ bugs. Designed government UI used by 100K+ citizens.'},
-    {id:3,role:'Software Developer',company:'Digital India Corporation · NeSDA',start:'Mar 2022',end:'Feb 2023',tags:['DigiLocker','NAD','API'],desc:'Reduced manual data entry by 50%. Led third-party API integration.'},
-    {id:4,role:'Digital Marketing Executive',company:'D.R. Brijmohan & Sons Pvt. Ltd.',start:'Dec 2020',end:'Feb 2022',tags:['SEO','A/B Testing'],desc:'Boosted social engagement by 45%.'},
-    {id:5,role:'Software Developer',company:'Technowell Services Pvt. Ltd.',start:'Dec 2018',end:'Nov 2020',tags:['PHP','MySQL','JavaScript'],desc:'Built customized software solutions for diverse clients.'},
-  ],
-  skills:[
-    {id:1,name:'Python',cat:'Backend',pct:95},{id:2,name:'PHP (CodeIgniter)',cat:'Backend',pct:90},
-    {id:3,name:'FastAPI / Flask',cat:'Backend',pct:92},{id:4,name:'MySQL',cat:'Backend',pct:85},
-    {id:5,name:'React JS',cat:'Frontend',pct:75},{id:6,name:'HTML/CSS/JS',cat:'Frontend',pct:85},
-    {id:7,name:'AWS',cat:'DevOps & Cloud',pct:85},{id:8,name:'Docker',cat:'DevOps & Cloud',pct:88},
-    {id:9,name:'ELK Stack',cat:'Tools & Infra',pct:82},{id:10,name:'Redis / RabbitMQ',cat:'Tools & Infra',pct:80},
-  ],
-  education:[
-    {id:1,deg:'Master of Computer Application',short:'MCA',inst:'Assam Science & Technology University, Guwahati',year:'2018',grade:'7.58 CGPA'},
-    {id:2,deg:'Bachelor of Computer Application',short:'BCA',inst:'Gauhati University, Guwahati',year:'2015',grade:'7.0 CGPA'},
-    {id:3,deg:'Higher Secondary — Science Stream',short:'HSC',inst:'Kendriya Vidyalaya Narangi · CBSE',year:'2012',grade:'—'},
-    {id:4,deg:'Secondary School Certificate',short:'SSC',inst:'Kendriya Vidyalaya Narangi · CBSE',year:'2010',grade:'—'},
-  ],
-  contact:{name:'Kunal Kanti Paul',email:'kunalkantipaul@gmail.com',phone1:'+91 96781 39456',phone2:'+91 700261 3771',location:'Guwahati, Assam, India',resume:'https://drive.google.com/file/d/1qvV6Kvmmz1DjzNZ7C5g3Nl5Q3w6RcTm5/view?usp=sharing',github:'https://github.com/kunal-paul04',linkedin:'',available:true},
-};
-let nextId={p:10,e:6,s:11,edu:5};
-
-function renderAll(){
-  renderProjects();renderExp();renderSkills();renderEdu();updateCounts();
+// ── Logout ───────────────────────────────────────────────────────────────────
+async function doLogout() {
+  try { await api('/api/auth/logout','POST'); } catch(e) { /* ignore */ }
+  window.location.href = '/admin';
 }
 
-function updateCounts(){
-  document.getElementById('count-projects').textContent=DB.projects.length;
-  document.getElementById('count-exp').textContent=DB.experience.length;
-  document.getElementById('count-skills').textContent=DB.skills.length;
-  document.getElementById('count-edu').textContent=DB.education.length;
+// ── Data loading ──────────────────────────────────────────────────────────────
+async function loadProjects() {
+  try { DB.projects = await api('/api/projects'); renderProjects(); updateCounts(); }
+  catch(e) { toast('Failed to load projects: '+e.message,'error'); }
+}
+async function loadExperience() {
+  try { DB.experience = await api('/api/experience'); renderExp(); updateCounts(); }
+  catch(e) { toast('Failed to load experience: '+e.message,'error'); }
+}
+async function loadSkills() {
+  try { DB.skills = await api('/api/skills'); renderSkills(); updateCounts(); }
+  catch(e) { toast('Failed to load skills: '+e.message,'error'); }
+}
+async function loadEducation() {
+  try { DB.education = await api('/api/education'); renderEdu(); updateCounts(); }
+  catch(e) { toast('Failed to load education: '+e.message,'error'); }
+}
+async function loadContact() {
+  try { DB.contact = await api('/api/contact') || {}; }
+  catch(e) { toast('Failed to load contact: '+e.message,'error'); }
+}
+async function loadAll() {
+  await Promise.all([loadProjects(), loadExperience(), loadSkills(), loadEducation(), loadContact()]);
 }
 
-function catBadge(cat){
-  if(cat==='personal') return '<span class="badge badge-blue">personal</span>';
-  return '<span class="badge badge-green">professional</span>';
+function updateCounts() {
+  document.getElementById('count-projects').textContent = DB.projects.length;
+  document.getElementById('count-exp').textContent = DB.experience.length;
+  document.getElementById('count-skills').textContent = DB.skills.length;
+  document.getElementById('count-edu').textContent = DB.education.length;
 }
-function skillCatBadge(c){
+
+// ── HTML escaping ─────────────────────────────────────────────────────────────
+function esc(s) {
+  return String(s)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
+// ── Badge helpers ─────────────────────────────────────────────────────────────
+function catBadge(cat) {
+  return cat==='personal'
+    ? '<span class="badge badge-blue">personal</span>'
+    : '<span class="badge badge-green">professional</span>';
+}
+function skillCatBadge(c) {
   const m={'Backend':'badge-orange','Frontend':'badge-blue','DevOps & Cloud':'badge-green','Tools & Infra':'badge-purple'};
-  return `<span class="badge ${m[c]||'badge-blue'}">${c}</span>`;
+  return `<span class="badge ${m[c]||'badge-blue'}">${esc(c)}</span>`;
 }
 
-function renderProjects(){
+// ── Render functions ──────────────────────────────────────────────────────────
+function renderProjects() {
   const tb=document.getElementById('tbody-projects');
-  if(!DB.projects.length){tb.innerHTML=`<tr><td colspan="7"><div class="empty"><div class="empty-icon">◈</div><div class="empty-text">no projects yet. add one above.</div></div></td></tr>`;return;}
-  tb.innerHTML=DB.projects.map((p,i)=>`
+  if (!DB.projects.length) { tb.innerHTML=`<tr><td colspan="7"><div class="empty"><div class="empty-icon">◈</div><div class="empty-text">no projects yet.</div></div></td></tr>`; return; }
+  tb.innerHTML = DB.projects.map((p,i) => `
     <tr>
       <td style="color:var(--muted);font-size:.65rem">${String(i+1).padStart(2,'0')}</td>
       <td>
         <div style="display:flex;align-items:center;gap:.7rem">
-          <img src="${p.img}" style="width:36px;height:28px;object-fit:cover;border:1px solid var(--border2);flex-shrink:0" onerror="this.style.display='none'">
+          <img src="${esc(p.img)}" style="width:36px;height:28px;object-fit:cover;border:1px solid var(--border2);flex-shrink:0" onerror="this.style.display='none'">
           <div>
-            <div style="font-weight:500;color:var(--text)">${p.name}</div>
-            <div style="font-size:.6rem;color:var(--muted);margin-top:.1rem">${p.desc.slice(0,40)}…</div>
+            <div style="font-weight:500;color:var(--text)">${esc(p.name)}</div>
+            <div style="font-size:.6rem;color:var(--muted);margin-top:.1rem">${esc(String(p.desc).slice(0,40))}…</div>
           </div>
         </div>
       </td>
-      <td><span class="badge badge-purple">${p.type}</span></td>
+      <td><span class="badge badge-purple">${esc(p.type)}</span></td>
       <td>${catBadge(p.cat)}</td>
-      <td><div style="display:flex;flex-wrap:wrap;gap:.3rem">${p.tags.map(t=>`<span style="font-size:.58rem;padding:.1rem .4rem;background:var(--surface);color:var(--muted2)">${t}</span>`).join('')}</div></td>
-      <td><a href="${p.url}" target="_blank" style="color:var(--cyan);font-size:.68rem;text-decoration:none">↗ link</a></td>
+      <td><div style="display:flex;flex-wrap:wrap;gap:.3rem">${(p.tags||[]).map(t=>`<span style="font-size:.58rem;padding:.1rem .4rem;background:var(--surface);color:var(--muted2)">${esc(t)}</span>`).join('')}</div></td>
+      <td><a href="${esc(p.url)}" target="_blank" rel="noopener" style="color:var(--cyan);font-size:.68rem;text-decoration:none">↗ link</a></td>
       <td><div class="td-actions">
-        <button class="btn btn-ghost btn-sm btn-icon" onclick="editProject(${p.id})" title="Edit">✎</button>
-        <button class="btn btn-danger btn-sm btn-icon" onclick="confirmDelete('project',${p.id},'${p.name}')" title="Delete">⌫</button>
+        <button class="btn btn-ghost btn-sm btn-icon" onclick="editProject('${esc(p.id)}')" title="Edit">✎</button>
+        <button class="btn btn-danger btn-sm btn-icon" onclick="confirmDelete('project','${esc(p.id)}','${esc(p.name)}')" title="Delete">⌫</button>
       </div></td>
     </tr>`).join('');
 }
 
-function renderExp(){
+function renderExp() {
   const tb=document.getElementById('tbody-exp');
-  if(!DB.experience.length){tb.innerHTML=`<tr><td colspan="6"><div class="empty"><div class="empty-icon">◉</div><div class="empty-text">no experience entries yet.</div></div></td></tr>`;return;}
-  tb.innerHTML=DB.experience.map((e,i)=>`
+  if (!DB.experience.length) { tb.innerHTML=`<tr><td colspan="6"><div class="empty"><div class="empty-icon">◉</div><div class="empty-text">no experience entries yet.</div></div></td></tr>`; return; }
+  tb.innerHTML = DB.experience.map((e,i) => `
     <tr>
       <td style="color:var(--muted);font-size:.65rem">${String(i+1).padStart(2,'0')}</td>
-      <td style="font-weight:500;color:var(--text)">${e.role}</td>
-      <td style="color:var(--cyan);font-size:.72rem">${e.company}</td>
-      <td style="font-size:.68rem;color:var(--muted2);white-space:nowrap">${e.start} — ${e.end}</td>
-      <td><div style="display:flex;flex-wrap:wrap;gap:.3rem">${e.tags.map(t=>`<span style="font-size:.58rem;padding:.1rem .4rem;background:var(--surface);color:var(--muted2)">${t}</span>`).join('')}</div></td>
+      <td style="font-weight:500;color:var(--text)">${esc(e.role)}</td>
+      <td style="color:var(--cyan);font-size:.72rem">${esc(e.company)}</td>
+      <td style="font-size:.68rem;color:var(--muted2);white-space:nowrap">${esc(e.start)} — ${esc(e.end)}</td>
+      <td><div style="display:flex;flex-wrap:wrap;gap:.3rem">${(e.tags||[]).map(t=>`<span style="font-size:.58rem;padding:.1rem .4rem;background:var(--surface);color:var(--muted2)">${esc(t)}</span>`).join('')}</div></td>
       <td><div class="td-actions">
-        <button class="btn btn-ghost btn-sm btn-icon" onclick="editExp(${e.id})">✎</button>
-        <button class="btn btn-danger btn-sm btn-icon" onclick="confirmDelete('exp',${e.id},'${e.role.replace(/'/g,'')}')">⌫</button>
+        <button class="btn btn-ghost btn-sm btn-icon" onclick="editExp('${esc(e.id)}')">✎</button>
+        <button class="btn btn-danger btn-sm btn-icon" onclick="confirmDelete('exp','${esc(e.id)}','${esc(e.role)}')">⌫</button>
       </div></td>
     </tr>`).join('');
 }
 
-function renderSkills(){
+function renderSkills() {
   const tb=document.getElementById('tbody-skills');
-  if(!DB.skills.length){tb.innerHTML=`<tr><td colspan="6"><div class="empty"><div class="empty-icon">◎</div><div class="empty-text">no skills tracked yet.</div></div></td></tr>`;return;}
-  tb.innerHTML=DB.skills.map((s,i)=>`
+  if (!DB.skills.length) { tb.innerHTML=`<tr><td colspan="6"><div class="empty"><div class="empty-icon">◎</div><div class="empty-text">no skills tracked yet.</div></div></td></tr>`; return; }
+  tb.innerHTML = DB.skills.map((s,i) => `
     <tr>
       <td style="color:var(--muted);font-size:.65rem">${String(i+1).padStart(2,'0')}</td>
-      <td style="font-weight:500;color:var(--text)">${s.name}</td>
+      <td style="font-weight:500;color:var(--text)">${esc(s.name)}</td>
       <td>${skillCatBadge(s.cat)}</td>
       <td style="color:var(--green);font-weight:500">${s.pct}%</td>
-      <td style="min-width:120px">
-        <div style="height:4px;background:var(--s2);position:relative">
-          <div style="height:100%;width:${s.pct}%;background:linear-gradient(90deg,var(--green2),var(--cyan))"></div>
-        </div>
-      </td>
+      <td style="min-width:120px"><div style="height:4px;background:var(--s2)"><div style="height:100%;width:${s.pct}%;background:linear-gradient(90deg,var(--green2),var(--cyan))"></div></div></td>
       <td><div class="td-actions">
-        <button class="btn btn-ghost btn-sm btn-icon" onclick="editSkill(${s.id})">✎</button>
-        <button class="btn btn-danger btn-sm btn-icon" onclick="confirmDelete('skill',${s.id},'${s.name}')">⌫</button>
+        <button class="btn btn-ghost btn-sm btn-icon" onclick="editSkill('${esc(s.id)}')">✎</button>
+        <button class="btn btn-danger btn-sm btn-icon" onclick="confirmDelete('skill','${esc(s.id)}','${esc(s.name)}')">⌫</button>
       </div></td>
     </tr>`).join('');
 }
 
-function renderEdu(){
+function renderEdu() {
   const tb=document.getElementById('tbody-edu');
-  if(!DB.education.length){tb.innerHTML=`<tr><td colspan="6"><div class="empty"><div class="empty-icon">◇</div><div class="empty-text">no education entries yet.</div></div></td></tr>`;return;}
-  tb.innerHTML=DB.education.map((e,i)=>`
+  if (!DB.education.length) { tb.innerHTML=`<tr><td colspan="6"><div class="empty"><div class="empty-icon">◇</div><div class="empty-text">no education entries yet.</div></div></td></tr>`; return; }
+  tb.innerHTML = DB.education.map((e,i) => `
     <tr>
       <td style="color:var(--muted);font-size:.65rem">${String(i+1).padStart(2,'0')}</td>
-      <td>
-        <div style="font-weight:500;color:var(--text)">${e.deg}</div>
-        <div style="font-size:.6rem;color:var(--muted)">${e.short}</div>
-      </td>
-      <td style="font-size:.72rem;color:var(--muted2)">${e.inst}</td>
-      <td style="color:var(--green)">${e.year}</td>
-      <td style="color:var(--muted2)">${e.grade}</td>
+      <td><div style="font-weight:500;color:var(--text)">${esc(e.deg)}</div><div style="font-size:.6rem;color:var(--muted)">${esc(e.short)}</div></td>
+      <td style="font-size:.72rem;color:var(--muted2)">${esc(e.inst)}</td>
+      <td style="color:var(--green)">${esc(e.year)}</td>
+      <td style="color:var(--muted2)">${esc(e.grade)}</td>
       <td><div class="td-actions">
-        <button class="btn btn-ghost btn-sm btn-icon" onclick="editEdu(${e.id})">✎</button>
-        <button class="btn btn-danger btn-sm btn-icon" onclick="confirmDelete('edu',${e.id},'${e.short}')">⌫</button>
+        <button class="btn btn-ghost btn-sm btn-icon" onclick="editEdu('${esc(e.id)}')">✎</button>
+        <button class="btn btn-danger btn-sm btn-icon" onclick="confirmDelete('edu','${esc(e.id)}','${esc(e.short)}')">⌫</button>
       </div></td>
     </tr>`).join('');
 }
 
-let projTags=[],expTags=[];
-function initTagInput(wrapId,inputId,tagsArr,onUpdate){
+// ── Tag inputs ────────────────────────────────────────────────────────────────
+let projTags=[], expTags=[];
+
+function initTagInput(wrapId, inputId, tagsArr) {
   const wrap=document.getElementById(wrapId);
   const input=document.getElementById(inputId);
-  function redraw(){
+  function redraw() {
     wrap.querySelectorAll('.tag-pill').forEach(t=>t.remove());
     tagsArr.forEach((t,i)=>{
-      const pill=document.createElement('span');pill.className='tag-pill';
-      pill.innerHTML=`${t}<button onclick="removeTag(${i},'${wrapId}','${inputId}')">×</button>`;
+      const pill=document.createElement('span');
+      pill.className='tag-pill';
+      pill.innerHTML=`${esc(t)}<button type="button" onclick="removeTag(${i},'${wrapId}','${inputId}')">×</button>`;
       wrap.insertBefore(pill,input);
     });
   }
   input.addEventListener('keydown',e=>{
-    if((e.key==='Enter'||e.key===',')&&input.value.trim()){
+    if ((e.key==='Enter'||e.key===',') && input.value.trim()) {
       e.preventDefault();
       tagsArr.push(input.value.trim().replace(',',''));
-      input.value='';redraw();
+      input.value=''; redraw();
     }
-    if(e.key==='Backspace'&&!input.value&&tagsArr.length){tagsArr.pop();redraw();}
+    if (e.key==='Backspace' && !input.value && tagsArr.length) { tagsArr.pop(); redraw(); }
   });
   redraw();
   return redraw;
 }
-function removeTag(i,wrapId,inputId){
-  if(wrapId==='proj-tags-wrap')projTags.splice(i,1);
-  else expTags.splice(i,1);
-  // re-render
-  if(wrapId==='proj-tags-wrap')drawProjTags();else drawExpTags();
-}
-let drawProjTags,drawExpTags;
 
-function openDrawer(type,clearData=true){
-  if(clearData) currentEdit={type};
+function removeTag(i, wrapId, inputId) {
+  if (wrapId==='proj-tags-wrap') { projTags.splice(i,1); drawProjTags(); }
+  else { expTags.splice(i,1); drawExpTags(); }
+}
+let drawProjTags, drawExpTags;
+
+// ── Drawers ───────────────────────────────────────────────────────────────────
+function openDrawer(type, clearData=true) {
   document.getElementById('overlay').classList.add('open');
   document.getElementById('drawer-'+type).classList.add('open');
-  if(type==='project'){
-    if(clearData){projTags=[];document.getElementById('proj-id').value='';['proj-name','proj-url','proj-img','proj-desc'].forEach(id=>document.getElementById(id).value='');document.getElementById('drw-project-title').textContent='new_project()';}
-    drawProjTags=initTagInput('proj-tags-wrap','proj-tag-input',projTags,()=>{});
+  if (type==='project') {
+    if (clearData) { projTags=[]; document.getElementById('proj-id').value=''; ['proj-name','proj-url','proj-img','proj-desc'].forEach(id=>document.getElementById(id).value=''); document.getElementById('drw-project-title').textContent='new_project()'; }
+    drawProjTags = initTagInput('proj-tags-wrap','proj-tag-input',projTags);
   }
-  if(type==='exp'){
-    if(clearData){expTags=[];document.getElementById('exp-id').value='';['exp-role','exp-company','exp-start','exp-end','exp-desc'].forEach(id=>document.getElementById(id).value='');document.getElementById('drw-exp-title').textContent='new_entry()';}
-    drawExpTags=initTagInput('exp-tags-wrap','exp-tag-input',expTags,()=>{});
+  if (type==='exp') {
+    if (clearData) { expTags=[]; document.getElementById('exp-id').value=''; ['exp-role','exp-company','exp-start','exp-end','exp-desc'].forEach(id=>document.getElementById(id).value=''); document.getElementById('drw-exp-title').textContent='new_entry()'; }
+    drawExpTags = initTagInput('exp-tags-wrap','exp-tag-input',expTags);
   }
-  if(type==='skill'){
-    if(clearData){['skill-id','skill-name','skill-pct'].forEach(id=>document.getElementById(id).value='');document.getElementById('skill-preview-bar').style.width='0%';document.getElementById('drw-skill-title').textContent='add_skill()';}
-    document.getElementById('skill-pct').addEventListener('input',e=>{
-      document.getElementById('skill-preview-bar').style.width=Math.min(100,Math.max(0,e.target.value))+'%';
-    });
+  if (type==='skill') {
+    if (clearData) { ['skill-id','skill-name','skill-pct'].forEach(id=>document.getElementById(id).value=''); document.getElementById('skill-preview-bar').style.width='0%'; document.getElementById('drw-skill-title').textContent='add_skill()'; }
+    document.getElementById('skill-pct').oninput = e => {
+      document.getElementById('skill-preview-bar').style.width = Math.min(100,Math.max(0,+e.target.value))+'%';
+    };
   }
-  if(type==='edu'){
-    if(clearData){['edu-id','edu-deg','edu-short','edu-inst','edu-year','edu-grade'].forEach(id=>document.getElementById(id).value='');document.getElementById('drw-edu-title').textContent='add_education()';}
+  if (type==='edu') {
+    if (clearData) { ['edu-id','edu-deg','edu-short','edu-inst','edu-year','edu-grade'].forEach(id=>document.getElementById(id).value=''); document.getElementById('drw-edu-title').textContent='add_education()'; }
   }
 }
 
-function closeDrawer(type){
+function closeDrawer(type) {
   document.getElementById('drawer-'+type).classList.remove('open');
   document.getElementById('overlay').classList.remove('open');
 }
+
 document.getElementById('overlay').addEventListener('click',()=>{
-  ['project','exp','skill','edu'].forEach(t=>{document.getElementById('drawer-'+t).classList.remove('open');});
+  ['project','exp','skill','edu'].forEach(t=>document.getElementById('drawer-'+t).classList.remove('open'));
   document.getElementById('overlay').classList.remove('open');
 });
 
-function saveProject(){
+// ── CRUD: Projects ────────────────────────────────────────────────────────────
+async function saveProject() {
   const name=document.getElementById('proj-name').value.trim();
-  if(!name){toast('Project name is required.','error');return;}
+  if (!name) { toast('Project name is required.','error'); return; }
   const id=document.getElementById('proj-id').value;
-  const obj={
-    id:id?parseInt(id):nextId.p++,
-    name,type:document.getElementById('proj-type').value,
-    cat:document.getElementById('proj-cat').value,
-    tags:[...projTags],
-    url:document.getElementById('proj-url').value,
-    img:document.getElementById('proj-img').value,
-    desc:document.getElementById('proj-desc').value,
-  };
-  if(id){const idx=DB.projects.findIndex(p=>p.id===parseInt(id));DB.projects[idx]=obj;}
-  else DB.projects.push(obj);
-  renderProjects();updateCounts();closeDrawer('project');
-  toast(`Project "${name}" ${id?'updated':'added'} successfully.`,'success');
+  const body={name,type:document.getElementById('proj-type').value,cat:document.getElementById('proj-cat').value,tags:[...projTags],url:document.getElementById('proj-url').value,img:document.getElementById('proj-img').value,desc:document.getElementById('proj-desc').value};
+  try {
+    if (id) await api(`/api/projects/${id}`,'PUT',body);
+    else await api('/api/projects','POST',body);
+    await loadProjects();
+    closeDrawer('project');
+    toast(`Project "${name}" ${id?'updated':'added'} successfully.`,'success');
+  } catch(e) { toast('Failed: '+e.message,'error'); }
 }
 
-function editProject(id){
-  const p=DB.projects.find(x=>x.id===id);if(!p)return;
+function editProject(id) {
+  const p=DB.projects.find(x=>x.id===id); if (!p) return;
   projTags=[...p.tags];
   document.getElementById('proj-id').value=p.id;
   document.getElementById('proj-name').value=p.name;
@@ -870,26 +819,23 @@ function editProject(id){
   openDrawer('project',false);
 }
 
-function saveExp(){
+// ── CRUD: Experience ──────────────────────────────────────────────────────────
+async function saveExp() {
   const role=document.getElementById('exp-role').value.trim();
-  if(!role){toast('Role is required.','error');return;}
+  if (!role) { toast('Role is required.','error'); return; }
   const id=document.getElementById('exp-id').value;
-  const obj={
-    id:id?parseInt(id):nextId.e++,
-    role,company:document.getElementById('exp-company').value,
-    start:document.getElementById('exp-start').value,
-    end:document.getElementById('exp-end').value,
-    tags:[...expTags],
-    desc:document.getElementById('exp-desc').value,
-  };
-  if(id){const idx=DB.experience.findIndex(e=>e.id===parseInt(id));DB.experience[idx]=obj;}
-  else DB.experience.push(obj);
-  renderExp();updateCounts();closeDrawer('exp');
-  toast(`Experience "${role}" ${id?'updated':'added'}.`,'success');
+  const body={role,company:document.getElementById('exp-company').value,start:document.getElementById('exp-start').value,end:document.getElementById('exp-end').value,tags:[...expTags],desc:document.getElementById('exp-desc').value};
+  try {
+    if (id) await api(`/api/experience/${id}`,'PUT',body);
+    else await api('/api/experience','POST',body);
+    await loadExperience();
+    closeDrawer('exp');
+    toast(`Experience "${role}" ${id?'updated':'added'}.`,'success');
+  } catch(e) { toast('Failed: '+e.message,'error'); }
 }
 
-function editExp(id){
-  const e=DB.experience.find(x=>x.id===id);if(!e)return;
+function editExp(id) {
+  const e=DB.experience.find(x=>x.id===id); if (!e) return;
   expTags=[...e.tags];
   document.getElementById('exp-id').value=e.id;
   document.getElementById('exp-role').value=e.role;
@@ -901,20 +847,24 @@ function editExp(id){
   openDrawer('exp',false);
 }
 
-function saveSkill(){
+// ── CRUD: Skills ──────────────────────────────────────────────────────────────
+async function saveSkill() {
   const name=document.getElementById('skill-name').value.trim();
   const pct=parseInt(document.getElementById('skill-pct').value)||0;
-  if(!name){toast('Skill name required.','error');return;}
+  if (!name) { toast('Skill name required.','error'); return; }
   const id=document.getElementById('skill-id').value;
-  const obj={id:id?parseInt(id):nextId.s++,name,cat:document.getElementById('skill-cat').value,pct};
-  if(id){const idx=DB.skills.findIndex(s=>s.id===parseInt(id));DB.skills[idx]=obj;}
-  else DB.skills.push(obj);
-  renderSkills();updateCounts();closeDrawer('skill');
-  toast(`Skill "${name}" ${id?'updated':'added'}.`,'success');
+  const body={name,cat:document.getElementById('skill-cat').value,pct};
+  try {
+    if (id) await api(`/api/skills/${id}`,'PUT',body);
+    else await api('/api/skills','POST',body);
+    await loadSkills();
+    closeDrawer('skill');
+    toast(`Skill "${name}" ${id?'updated':'added'}.`,'success');
+  } catch(e) { toast('Failed: '+e.message,'error'); }
 }
 
-function editSkill(id){
-  const s=DB.skills.find(x=>x.id===id);if(!s)return;
+function editSkill(id) {
+  const s=DB.skills.find(x=>x.id===id); if (!s) return;
   document.getElementById('skill-id').value=s.id;
   document.getElementById('skill-name').value=s.name;
   document.getElementById('skill-cat').value=s.cat;
@@ -924,19 +874,23 @@ function editSkill(id){
   openDrawer('skill',false);
 }
 
-function saveEdu(){
+// ── CRUD: Education ───────────────────────────────────────────────────────────
+async function saveEdu() {
   const deg=document.getElementById('edu-deg').value.trim();
-  if(!deg){toast('Degree name required.','error');return;}
+  if (!deg) { toast('Degree name required.','error'); return; }
   const id=document.getElementById('edu-id').value;
-  const obj={id:id?parseInt(id):nextId.edu++,deg,short:document.getElementById('edu-short').value,inst:document.getElementById('edu-inst').value,year:document.getElementById('edu-year').value,grade:document.getElementById('edu-grade').value};
-  if(id){const idx=DB.education.findIndex(e=>e.id===parseInt(id));DB.education[idx]=obj;}
-  else DB.education.push(obj);
-  renderEdu();updateCounts();closeDrawer('edu');
-  toast(`Education "${deg}" ${id?'updated':'added'}.`,'success');
+  const body={deg,short:document.getElementById('edu-short').value,inst:document.getElementById('edu-inst').value,year:document.getElementById('edu-year').value,grade:document.getElementById('edu-grade').value};
+  try {
+    if (id) await api(`/api/education/${id}`,'PUT',body);
+    else await api('/api/education','POST',body);
+    await loadEducation();
+    closeDrawer('edu');
+    toast(`Education "${deg}" ${id?'updated':'added'}.`,'success');
+  } catch(e) { toast('Failed: '+e.message,'error'); }
 }
 
-function editEdu(id){
-  const e=DB.education.find(x=>x.id===id);if(!e)return;
+function editEdu(id) {
+  const e=DB.education.find(x=>x.id===id); if (!e) return;
   document.getElementById('edu-id').value=e.id;
   document.getElementById('edu-deg').value=e.deg;
   document.getElementById('edu-short').value=e.short;
@@ -947,21 +901,18 @@ function editEdu(id){
   openDrawer('edu',false);
 }
 
-function loadContactForm(){
+// ── CRUD: Contact ─────────────────────────────────────────────────────────────
+function loadContactForm() {
   const c=DB.contact;
-  document.getElementById('c-name').value=c.name;
-  document.getElementById('c-email').value=c.email;
-  document.getElementById('c-phone1').value=c.phone1;
-  document.getElementById('c-phone2').value=c.phone2;
-  document.getElementById('c-location').value=c.location;
-  document.getElementById('c-resume').value=c.resume;
-  document.getElementById('c-github').value=c.github;
-  document.getElementById('c-linkedin').value=c.linkedin;
-  document.getElementById('c-available').checked=c.available;
+  ['name','email','phone1','phone2','location','resume','github','linkedin'].forEach(k=>{
+    const el=document.getElementById('c-'+k);
+    if (el) el.value=c[k]||'';
+  });
+  document.getElementById('c-available').checked=!!c.available;
 }
 
-function saveContact(){
-  DB.contact={
+async function saveContact() {
+  const body={
     name:document.getElementById('c-name').value,
     email:document.getElementById('c-email').value,
     phone1:document.getElementById('c-phone1').value,
@@ -972,34 +923,120 @@ function saveContact(){
     linkedin:document.getElementById('c-linkedin').value,
     available:document.getElementById('c-available').checked,
   };
-  toast('Contact info saved successfully.','success');
+  try {
+    DB.contact = await api('/api/contact','PUT',body);
+    toast('Contact info saved successfully.','success');
+  } catch(e) { toast('Failed: '+e.message,'error'); }
 }
 
+// ── Delete confirmation ───────────────────────────────────────────────────────
 let pendingDelete={};
-function confirmDelete(type,id,name){
+function confirmDelete(type,id,name) {
   pendingDelete={type,id};
   document.getElementById('confirmMsg').textContent=`Delete "${name}"? This cannot be undone.`;
   document.getElementById('confirmBox').classList.add('open');
 }
-function closeConfirm(){document.getElementById('confirmBox').classList.remove('open');}
-document.getElementById('confirmOk').addEventListener('click',()=>{
+function closeConfirm() { document.getElementById('confirmBox').classList.remove('open'); }
+
+document.getElementById('confirmOk').addEventListener('click', async ()=>{
   const {type,id}=pendingDelete;
-  if(type==='project')DB.projects=DB.projects.filter(p=>p.id!==id),renderProjects();
-  else if(type==='exp')DB.experience=DB.experience.filter(e=>e.id!==id),renderExp();
-  else if(type==='skill')DB.skills=DB.skills.filter(s=>s.id!==id),renderSkills();
-  else if(type==='edu')DB.education=DB.education.filter(e=>e.id!==id),renderEdu();
-  updateCounts();closeConfirm();
-  toast('Entry deleted.','success');
+  const endpoints={project:'projects',exp:'experience',skill:'skills',edu:'education'};
+  const loaders={project:loadProjects,exp:loadExperience,skill:loadSkills,edu:loadEducation};
+  try {
+    await api(`/api/${endpoints[type]}/${id}`,'DELETE');
+    await loaders[type]();
+    closeConfirm();
+    toast('Entry deleted.','success');
+  } catch(e) { toast('Delete failed: '+e.message,'error'); closeConfirm(); }
 });
 
-function toast(msg,type='success'){
+// ── Toast ─────────────────────────────────────────────────────────────────────
+function toast(msg,type='success') {
   const wrap=document.getElementById('toasts');
   const t=document.createElement('div');
   t.className=`toast ${type}`;
-  t.textContent=(type==='success'?'✓ ':' ⚠ ')+msg;
+  t.textContent=(type==='success'?'✓ ':'⚠ ')+msg;
   wrap.appendChild(t);
   setTimeout(()=>{t.style.animation='fadeOut .3s forwards';setTimeout(()=>t.remove(),300);},3000);
 }
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+loadAll();
 </script>
+
+{% else %}
+<div class="page active" id="page-login">
+  <div class="login-grid-bg"></div>
+  <div class="login-glow"></div>
+  <div class="login-box">
+    <div class="login-brand">
+      <div class="login-logo">portfolio_admin</div>
+      <div class="login-sub">Portfolio Content Management System</div>
+    </div>
+    <div class="login-window">
+      <div class="win-bar">
+        <div class="wd r"></div><div class="wd y"></div><div class="wd g"></div>
+        <div class="win-title">auth.session — bash</div>
+      </div>
+      <div class="login-form">
+        <div class="form-comment"># authenticate to access your CMS</div>
+        <div class="field">
+          <div class="field-label">username</div>
+          <div class="field-wrap"><input id="login-user" type="text" placeholder="admin" autocomplete="username" required></div>
+        </div>
+        <div class="field">
+          <div class="field-label">password</div>
+          <div class="field-wrap">
+            <input id="login-pass" type="password" placeholder="••••••••" autocomplete="current-password">
+            <button class="toggle-pw" onclick="togglePw()" type="button">👁</button>
+          </div>
+        </div>
+        <div class="login-err" id="login-err">⚠ Error: invalid credentials. try again.</div>
+        <button class="btn-login" onclick="doLogin()" type="button">$ ./login --execute</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── Cursor ──────────────────────────────────────────────────────────────────
+const cur=document.getElementById('cur'),ring=document.getElementById('cur-ring');
+if(window.matchMedia('(hover:hover)').matches){
+  let mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
+  (function a(){cur.style.transform=`translate(${mx-3}px,${my-3}px)`;rx+=(mx-rx)*.1;ry+=(my-ry)*.1;ring.style.transform=`translate(${rx-13}px,${ry-13}px)`;requestAnimationFrame(a)})();
+  document.querySelectorAll('button,input').forEach(el=>{el.addEventListener('mouseenter',()=>ring.classList.add('link'));el.addEventListener('mouseleave',()=>ring.classList.remove('link'));});
+}
+
+document.getElementById('login-pass').addEventListener('keydown',e=>{ if(e.key==='Enter') doLogin(); });
+document.getElementById('login-user').addEventListener('keydown',e=>{ if(e.key==='Enter') doLogin(); });
+
+function togglePw() {
+  const i=document.getElementById('login-pass');
+  i.type=i.type==='password'?'text':'password';
+}
+
+async function doLogin() {
+  const u=document.getElementById('login-user').value.trim();
+  const p=document.getElementById('login-pass').value;
+  const err=document.getElementById('login-err');
+  err.classList.remove('show');
+  try {
+    const r=await fetch('/api/auth/login',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      credentials:'include',
+      body:JSON.stringify({username:u,password:p})
+    });
+    if (!r.ok) throw new Error('bad credentials');
+    // JWT cookie set by server — reload to get dashboard
+    window.location.reload();
+  } catch(_) {
+    err.classList.add('show');
+    setTimeout(()=>err.classList.remove('show'),3500);
+  }
+}
+</script>
+{% endif %}
 </body>
 </html>
